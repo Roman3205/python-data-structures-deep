@@ -13,6 +13,7 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
 
+    # O(n) or or O(log n) O(h) - height of tree
     def __contains__(self, key):
         current_node = self.root
 
@@ -24,13 +25,16 @@ class BinarySearchTree:
             else:
                 return True
         return False
-
+    
+    # O(n)
     def __iter__(self):
         yield from self._in_order_traversal(self.root)
 
+    # O(n)
     def __repr__(self):
         return str(list(self._in_order_traversal(self.root)))
 
+    # O(n) or or O(log n) O(h) - height of tree
     def insert(self, key, value):
         if self.root is None:
             self.root = Node(key)
@@ -57,6 +61,8 @@ class BinarySearchTree:
                 else:
                     current_node.value = value
                     break
+
+    # O(n) or or O(log n) O(h) - height of tree
     def search(self, key):
         current_node = self.root
 
@@ -74,6 +80,7 @@ class BinarySearchTree:
                 else:
                     current_node = current_node.right
 
+    # O(n) or or O(log n) O(h) - height of tree
     def delete(self, key):
         node = self.search(key)
 
@@ -82,7 +89,8 @@ class BinarySearchTree:
         
         self._delete(node)
 
-    def traverse(self, order):
+    # O(n)
+    def traverse(self, order = 'in'):
         if order == 'in':
             yield from self._in_order_traversal(self.root)
         elif order == 'pre':
@@ -123,7 +131,8 @@ class BinarySearchTree:
             node.key = successor.key
             node.value = successor.value
 
-            self.delete(successor)
+            self._delete(successor)
+
     def _successor(self, node):
         if node is None:
             raise ValueError("Successor not found")
@@ -167,3 +176,17 @@ class BinarySearchTree:
             yield from self._pre_order_traversal(node.left)
             yield from self._pre_order_traversal(node.right)
             yield (node.key, node.value)
+
+if __name__ == "__main__":
+    bst = BinarySearchTree()
+    bst.insert(10, 'test')
+    bst.insert(15, 'test')
+    bst.insert(12, 'test')
+    bst.insert(17, 'test')
+    bst.insert(25, 'test')
+    bst.insert(5, 'test')
+    # bst.delete(10)
+    traverse = bst.traverse('pre')
+    for i in traverse:
+        print(i)
+    print(bst.search(25))
